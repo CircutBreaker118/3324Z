@@ -26,5 +26,5 @@ Welcome to the official website of 3324Z Circuit BreakerZ
 
 
 
-This site is built by Ansh Sharma. [If you want to know more about the members of 3324Z, CLICK HERE](/about/)
+This site is built by Ansh Sharma. If you want to know more about the members of 3324Z, [CLICK HERE](/about/)
 
