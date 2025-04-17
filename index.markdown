@@ -6,7 +6,7 @@ layout: default
 title: The Circuit BreakerZ
 ---
 
-Welcome to the official website of 3324Z Circuit BreakerZ
+Welcomse to the official website of 3324Z Circuit BreakerZ
 
 
 
