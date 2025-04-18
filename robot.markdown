@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: J.A.R.V.I.S
 permalink: /jarvis/
 ---
