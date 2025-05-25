@@ -13,7 +13,7 @@ About Us:
 
 Goals:
   Our mission is to have fun and new learn things as we go along. We also want to win competitions
-  and qualify to worlds in 7th grade as it will be easy to accomplish. 
+  and qualify to worlds in 7th grade as it is something that we want to accomplish. 
 
 Members of 3324Z
 
@@ -26,6 +26,5 @@ Members of 3324Z
   a geneticist. My role is the main builder.
 
 
-  (This is taken from our Highstakes notebook.)
 
 [Now if you want some stuff on our robot](/jarvis/)
