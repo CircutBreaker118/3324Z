@@ -30,5 +30,3 @@ permalink: /about/
   DONUTS!!!!!!!!!!!!!!!
 
 
-
-[Now if you want some stuff on our robot](/jarvis/)
