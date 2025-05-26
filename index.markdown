@@ -5,6 +5,6 @@
 layout: default
 title: The Circuit BreakerZ
 ---
-Welcome to the official website of 3324Z Circuit BreakerZ
-This site is built by Ansh Sharma. If you want to know more about the members of 3324Z, [CLICK HERE](/about/)
+<h4>Welcome to the official website of 3324Z Circuit BreakerZ<h4>
+<h4>This site is built by Ansh Sharma. If you want to know more about the members of 3324Z, go to our about page.<h4>
 ![Our Logo](/3324Z.png)
