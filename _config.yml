@@ -33,8 +33,9 @@ github_username:  jekyll
 
 # Build settings
 #theme: jekyll-theme-architect
-them: minimal-mistakes-jekyll
+theme: minimal-mistakes-jekyll
 plugins:
+  - jekyll-remote-theme
   - jekyll-feed
 
 # Exclude from processing.
