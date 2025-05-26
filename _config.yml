@@ -32,8 +32,9 @@ github_username:  jekyll
 #- jekyll-remote-theme # add this line to the plugins list if you already have one
 
 # Build settings
-theme: jekyll-theme-architect
-#theme: minimal-mistakes-jekyll
+#theme: jekyll-theme-architect
+theme: minima
+
 plugins:
   - jekyll-remote-theme
   - jekyll-feed
