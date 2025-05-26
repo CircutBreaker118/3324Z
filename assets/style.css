@@ -1,5 +1,6 @@
 body {
     font-size: 20px;
+    background-color: aquamarine;
 }
 
 h1 {
@@ -10,6 +11,3 @@ h2 {
     font-size: 36px;
 }
 
-h3 {
-    background-color: aquamarine;
-}
