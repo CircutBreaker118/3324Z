@@ -28,5 +28,3 @@ permalink: /about/
   <h2> Main Food (i don't know why this is here) <h2>
 
   DONUTS!!!!!!!!!!!!!!!
-
-
