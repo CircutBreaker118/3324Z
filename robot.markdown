@@ -4,6 +4,6 @@ title: J.A.R.V.I.S
 permalink: /jarvis/
 ---
 
-<h3>J.A.R.V.I.S is inspired by the one and only IRON MAN<h3>
+J.A.R.V.I.S is inspired by the one and only IRON MAN
 
 
