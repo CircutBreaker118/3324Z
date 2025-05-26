@@ -7,8 +7,8 @@ title: The Circuit BreakerZ
 ---
 
 
-<h3>Welcome to the official website of 3324Z Circuit BreakerZ
-This site is built by Ansh Sharma. If you want to know more about the members of 3324Z, [CLICK HERE](/about/)<h3>
+Welcome to the official website of 3324Z Circuit BreakerZ
+This site is built by Ansh Sharma. If you want to know more about the members of 3324Z, [CLICK HERE](/about/)
 
 
 ![Our Logo](/3324Z.png)
