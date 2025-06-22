@@ -3,3 +3,5 @@ main:
    url: /about/
  - title: "J.A.R.V.I.S"
    url: /jarvis/
+ - title: "Stats"
+   url: /statistics/  
