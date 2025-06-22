@@ -7,8 +7,8 @@ permalink: /about/
 
 <h1> About Us: </h1>
 
-  We are a kids robotics group who started our journey in robotics in 6th grade. We are currently
-  in 6th grade and compete in RECF robotics competition. One of our greatest achievements so far is
+  We are a kids robotics group who started our journey in robotics in 6th grade (2024-2025). We are currently
+  in 7th grade and compete in RECF robotics competitions. One of our greatest achievements so far is
   reaching the 2025 California Middle School Regional Championship. We had lots of fun and learned several new things.
 
 <h2> Goals: </h2>
