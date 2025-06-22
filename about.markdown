@@ -25,6 +25,6 @@ permalink: /about/
   I also joined to try new things and to expand my field of knowledge. When I grow up I want to be
   a geneticist. My role is the main builder.
 
-  <h2> Main Food (i don't know why this is here) <h2>
+  <h2> Favorite Food (idk why this is here) <h2>
 
   DONUTS!!!!!!!!!!!!!!!
