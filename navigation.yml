@@ -1,7 +1,7 @@
 main:
  - title: "About"
    url: /about/
- - title: "J.A.R.V.I.S"
-   url: /jarvis/
+ - title: "DUM-E"
+   url: /dum-e/
  - title: "Stats"
-   url: /statistics/  
+   url: /statistics/
