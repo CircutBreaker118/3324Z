@@ -541,20 +541,26 @@ a:hover {
   display: none;
 }
 
-/* About — donut photo background */
+/* About — donut photo only (override global body accent radial) */
 body.page-about {
-  background-color: #0d9488;
-  background-image: url("/assets/images/about-donuts.png");
-  background-size: cover;
-  background-position: 42% center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  position: relative;
+  background-color: #5ec4c4;
+  background-image: none;
+}
+
+body.page-about::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("/assets/images/about-donuts.png?v=3") 58% 42% / cover no-repeat fixed;
+  filter: blur(4px) saturate(1.05);
+  transform: scale(1.04);
 }
 
 [data-theme="dark"] body.page-about {
-  background-color: #134e4a;
-  background-image: url("/assets/images/about-donuts.png");
-  background-position: 42% center;
+  background-color: #3d8a86;
+  background-image: none;
 }
 
 body.page-about .site-main__inner {
