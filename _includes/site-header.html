@@ -1,0 +1,56 @@
+<header class="site-header" role="banner">
+  <div class="site-header__inner">
+    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }} home">
+      <img
+        class="site-brand__logo"
+        src="{{ '/3324Z.png' | relative_url }}"
+        alt=""
+        width="48"
+        height="48"
+        decoding="async"
+      />
+      <span class="site-brand__text">
+        <span class="site-brand__team">3324Z</span>
+        <span class="site-brand__name">{{ site.title | escape }}</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        {%- for item in site.data.navigation -%}
+          {%- assign item_path = item.url | relative_url -%}
+          {%- assign page_path = page.url | relative_url -%}
+          {%- assign is_current = false -%}
+          {%- if item.url == '/' -%}
+            {%- if page_path == '/' or page_path == '/index.html' -%}
+              {%- assign is_current = true -%}
+            {%- endif -%}
+          {%- elsif page_path == item_path -%}
+            {%- assign is_current = true -%}
+          {%- endif -%}
+          <li class="site-nav__item">
+            <a
+              class="site-nav__link{% if is_current %} site-nav__link--current{% endif %}"
+              href="{{ item_path }}"
+              {% if is_current %}aria-current="page"{% endif %}
+            >
+              {{ item.title | escape }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="theme-toggle"
+      id="theme-toggle"
+      aria-label="Switch to dark theme"
+      aria-pressed="false"
+    >
+      <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+      <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+      <span class="theme-toggle__label">Theme</span>
+    </button>
+  </div>
+</header>
