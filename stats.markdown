@@ -1,7 +1,5 @@
 ---
-layout: default
-title: Stats
+layout: stats
+title: Statistics
 permalink: /statistics/
 ---
-
-<h1> Stats Table: <h1>

@@ -2,6 +2,7 @@
 layout: default
 title: About
 permalink: /about/
+body_class: page-about
 ---
 
 <section class="page-section">

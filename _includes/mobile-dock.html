@@ -1,0 +1,29 @@
+<nav class="mobile-dock" aria-label="Mobile">
+  <ul class="mobile-dock__list">
+    {%- for item in site.data.navigation -%}
+      {%- assign dock_label = item.title -%}
+      {%- if item.title == 'Statistics' -%}
+        {%- assign dock_label = 'Stats' -%}
+      {%- endif -%}
+      {%- assign item_path = item.url | relative_url -%}
+      {%- assign page_path = page.url | relative_url -%}
+      {%- assign is_current = false -%}
+      {%- if item.url == '/' -%}
+        {%- if page_path == '/' or page_path == '/index.html' -%}
+          {%- assign is_current = true -%}
+        {%- endif -%}
+      {%- elsif page_path == item_path -%}
+        {%- assign is_current = true -%}
+      {%- endif -%}
+      <li class="mobile-dock__item">
+        <a
+          class="mobile-dock__link{% if is_current %} mobile-dock__link--current{% endif %}"
+          href="{{ item_path }}"
+          {% if is_current %}aria-current="page"{% endif %}
+        >
+          {{ dock_label | escape }}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

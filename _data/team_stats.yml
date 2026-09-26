@@ -1,0 +1,35 @@
+season: Push Back
+team_number: "3324Z"
+team_name: Circuit BreakerZ
+location: North Hollywood
+school: Science Academy STEM Magnet
+program: VRC MS
+record:
+  wins: 14
+  losses: 28
+  ties: 0
+  win_rate_percent: 33
+trueskill:
+  rank: 7812
+  total_teams: 12223
+skills:
+  best: 104
+  world_rank: 238
+events: 8
+matches: 42
+avg_wp: 0.7
+radar:
+  labels:
+    - Autonomous
+    - Driver Skills
+    - TrueSkill
+    - Win Rate
+    - Experience
+    - Avg WP
+  values:
+    - 86
+    - 68
+    - 24
+    - 33
+    - 82
+    - 70
