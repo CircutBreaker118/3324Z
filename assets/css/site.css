@@ -16,9 +16,10 @@
   --color-text-muted: #4a5568;
   --color-text-faint: #64748b;
 
-  --color-accent: #e85d04;
-  --color-accent-hover: #c44900;
-  --color-accent-soft: rgba(232, 93, 4, 0.12);
+  --color-accent: #e63946;
+  --color-accent-hover: #c1121f;
+  --color-accent-soft: rgba(230, 57, 70, 0.14);
+  --color-accent-glow: rgba(255, 107, 74, 0.22);
   --color-focus: #2563eb;
 
   --color-header-bg: rgba(255, 255, 255, 0.92);
@@ -57,9 +58,10 @@
   --color-text-muted: #a8b4c4;
   --color-text-faint: #7a8799;
 
-  --color-accent: #ff8c42;
-  --color-accent-hover: #ffb366;
-  --color-accent-soft: rgba(255, 140, 66, 0.15);
+  --color-accent: #ff6b4a;
+  --color-accent-hover: #ff8577;
+  --color-accent-soft: rgba(255, 107, 74, 0.18);
+  --color-accent-glow: rgba(255, 107, 74, 0.28);
   --color-focus: #60a5fa;
 
   --color-header-bg: rgba(11, 15, 20, 0.94);
@@ -91,7 +93,7 @@ body {
   background-color: var(--color-bg);
   background-image:
     linear-gradient(180deg, var(--color-bg-muted) 0%, transparent 12rem),
-    radial-gradient(ellipse 80% 50% at 50% -20%, var(--color-accent-soft), transparent 70%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--color-accent-glow, var(--color-accent-soft)), transparent 70%);
 }
 
 img {
@@ -539,25 +541,46 @@ a:hover {
   display: none;
 }
 
-/* About — donut pattern */
+/* About — donut photo background */
 body.page-about {
-  background-color: #f5e6d3;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23c87941' stroke-width='3'%3E%3Ccircle cx='40' cy='40' r='28' fill='%23f4a261'/%3E%3Ccircle cx='40' cy='40' r='10' fill='%23fef3e2'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 72px 72px;
+  background-color: #9d0208;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(230, 57, 70, 0.72) 0%,
+      rgba(193, 18, 31, 0.68) 45%,
+      rgba(157, 2, 8, 0.75) 100%
+    ),
+    url("/assets/images/about-donuts.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 [data-theme="dark"] body.page-about {
-  background-color: #1a1410;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%238b5a2b' stroke-width='3'%3E%3Ccircle cx='40' cy='40' r='28' fill='%23b5651d'/%3E%3Ccircle cx='40' cy='40' r='10' fill='%232a1f18'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #370617;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(193, 18, 31, 0.78) 0%,
+      rgba(55, 6, 23, 0.82) 50%,
+      rgba(29, 4, 12, 0.88) 100%
+    ),
+    url("/assets/images/about-donuts.png");
 }
 
 body.page-about .site-main__inner {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(230, 57, 70, 0.28);
+  box-shadow: 0 8px 32px rgba(193, 18, 31, 0.12);
 }
 
 [data-theme="dark"] body.page-about .site-main__inner {
-  background: rgba(18, 24, 32, 0.9);
+  background: rgba(18, 24, 32, 0.88);
+  border-color: rgba(255, 107, 74, 0.32);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 body.page-about .page-section,
@@ -565,12 +588,65 @@ body.page-about .favorite-food {
   background: rgba(255, 255, 255, 0.72);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid rgba(230, 57, 70, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+body.page-about .page-section h2 {
+  color: var(--color-accent-hover);
 }
 
 [data-theme="dark"] body.page-about .page-section,
 [data-theme="dark"] body.page-about .favorite-food {
-  background: rgba(26, 34, 45, 0.75);
+  background: rgba(26, 34, 45, 0.78);
+  border-color: rgba(255, 107, 74, 0.38);
+}
+
+/* 404 — centered robotics message */
+body.page-404 .site-main__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: min(60vh, 32rem);
+  text-align: center;
+}
+
+.page-not-found {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.page-not-found__code {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: clamp(3.5rem, 12vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+}
+
+.page-not-found h1 {
+  margin: 0 0 var(--space-md);
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.page-not-found__lead {
+  margin: 0 0 var(--space-lg);
+  font-size: 1.0625rem;
+  color: var(--color-text-muted);
+}
+
+.page-not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-top: var(--space-xl);
 }
 
 /* DUM-E — Push Back decorative grids */
