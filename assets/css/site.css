@@ -16,10 +16,10 @@
   --color-text-muted: #4a5568;
   --color-text-faint: #64748b;
 
-  --color-accent: #e63946;
-  --color-accent-hover: #c1121f;
-  --color-accent-soft: rgba(230, 57, 70, 0.14);
-  --color-accent-glow: rgba(255, 107, 74, 0.22);
+  --color-accent: #b91c1c;
+  --color-accent-hover: #7f1d1d;
+  --color-accent-soft: rgba(185, 28, 28, 0.14);
+  --color-accent-glow: rgba(127, 29, 29, 0.18);
   --color-focus: #2563eb;
 
   --color-header-bg: rgba(255, 255, 255, 0.92);
@@ -58,10 +58,10 @@
   --color-text-muted: #a8b4c4;
   --color-text-faint: #7a8799;
 
-  --color-accent: #ff6b4a;
-  --color-accent-hover: #ff8577;
-  --color-accent-soft: rgba(255, 107, 74, 0.18);
-  --color-accent-glow: rgba(255, 107, 74, 0.28);
+  --color-accent: #dc2626;
+  --color-accent-hover: #991b1b;
+  --color-accent-soft: rgba(220, 38, 38, 0.18);
+  --color-accent-glow: rgba(153, 27, 27, 0.22);
   --color-focus: #60a5fa;
 
   --color-header-bg: rgba(11, 15, 20, 0.94);
@@ -543,43 +543,30 @@ a:hover {
 
 /* About — donut photo background */
 body.page-about {
-  background-color: #9d0208;
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(230, 57, 70, 0.72) 0%,
-      rgba(193, 18, 31, 0.68) 45%,
-      rgba(157, 2, 8, 0.75) 100%
-    ),
-    url("/assets/images/about-donuts.png");
+  background-color: #0d9488;
+  background-image: url("/assets/images/about-donuts.png");
   background-size: cover;
-  background-position: center;
+  background-position: 42% center;
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
 
 [data-theme="dark"] body.page-about {
-  background-color: #370617;
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(193, 18, 31, 0.78) 0%,
-      rgba(55, 6, 23, 0.82) 50%,
-      rgba(29, 4, 12, 0.88) 100%
-    ),
-    url("/assets/images/about-donuts.png");
+  background-color: #134e4a;
+  background-image: url("/assets/images/about-donuts.png");
+  background-position: 42% center;
 }
 
 body.page-about .site-main__inner {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(230, 57, 70, 0.28);
-  box-shadow: 0 8px 32px rgba(193, 18, 31, 0.12);
+  border: 1px solid rgba(185, 28, 28, 0.28);
+  box-shadow: 0 8px 32px rgba(127, 29, 29, 0.14);
 }
 
 [data-theme="dark"] body.page-about .site-main__inner {
   background: rgba(18, 24, 32, 0.88);
-  border-color: rgba(255, 107, 74, 0.32);
+  border-color: rgba(220, 38, 38, 0.32);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
@@ -588,7 +575,7 @@ body.page-about .favorite-food {
   background: rgba(255, 255, 255, 0.72);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
-  border: 1px solid rgba(230, 57, 70, 0.35);
+  border: 1px solid rgba(185, 28, 28, 0.32);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
@@ -599,7 +586,7 @@ body.page-about .page-section h2 {
 [data-theme="dark"] body.page-about .page-section,
 [data-theme="dark"] body.page-about .favorite-food {
   background: rgba(26, 34, 45, 0.78);
-  border-color: rgba(255, 107, 74, 0.38);
+  border-color: rgba(220, 38, 38, 0.36);
 }
 
 /* 404 — centered robotics message */
