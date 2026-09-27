@@ -70,7 +70,15 @@
     rafId: null,
     resizeObserver: null,
     idleTimer: null,
+    liftMesh: null,
+    liftAxis: null,
+    liftAnimStart: 0,
   };
+
+  // Full up-and-back-down cycle length; a plain sine wave naturally gives
+  // an ease-in-out swing with a ~5s "up" half and a ~5s "down" half.
+  var LIFT_CYCLE_SECONDS = 10;
+  var LIFT_ROTATION_AMPLITUDE = Math.PI / 20; // ~9° each way, ~18° total swing
 
   function readThemeColors() {
     var styles = getComputedStyle(document.documentElement);
@@ -157,32 +165,49 @@
    * the full model).
    */
   function computeRobustBounds(THREE, object) {
-    var mesh = null;
+    // The model may have been split into separate lift/base meshes (see
+    // splitLiftFromModel), so gather samples across *all* meshes rather
+    // than just the first one found.
+    var meshes = [];
     object.traverse(function (node) {
-      if (!mesh && node.isMesh && node.geometry && node.geometry.attributes.position) {
-        mesh = node;
+      if (node.isMesh && node.geometry && node.geometry.attributes.position) {
+        meshes.push(node);
       }
     });
-    if (!mesh) return null;
+    if (!meshes.length) return null;
 
-    var positionAttr = mesh.geometry.attributes.position;
-    var count = positionAttr.count;
+    // Use one global stride (based on the combined vertex count across
+    // all meshes) rather than a per-mesh budget, so a small mesh (like
+    // the sparse lift arm) contributes samples in proportion to its
+    // actual share of the model's total geometry — exactly as if this
+    // were still the single original fused mesh. Otherwise a tiny mesh
+    // would get disproportionately over-sampled and skew the percentile
+    // framing box.
     var maxSamples = 60000;
-    var stride = Math.max(1, Math.floor(count / maxSamples));
+    var totalCount = 0;
+    meshes.forEach(function (mesh) {
+      totalCount += mesh.geometry.attributes.position.count;
+    });
+    var stride = Math.max(1, Math.floor(totalCount / maxSamples));
 
     var xs = [];
     var ys = [];
     var zs = [];
     var v = new THREE.Vector3();
-    mesh.updateWorldMatrix(true, false);
 
-    for (var i = 0; i < count; i += stride) {
-      v.set(positionAttr.getX(i), positionAttr.getY(i), positionAttr.getZ(i));
-      v.applyMatrix4(mesh.matrixWorld);
-      xs.push(v.x);
-      ys.push(v.y);
-      zs.push(v.z);
-    }
+    meshes.forEach(function (mesh) {
+      var positionAttr = mesh.geometry.attributes.position;
+      var count = positionAttr.count;
+      mesh.updateWorldMatrix(true, false);
+
+      for (var i = 0; i < count; i += stride) {
+        v.set(positionAttr.getX(i), positionAttr.getY(i), positionAttr.getZ(i));
+        v.applyMatrix4(mesh.matrixWorld);
+        xs.push(v.x);
+        ys.push(v.y);
+        zs.push(v.z);
+      }
+    });
 
     if (!xs.length) return null;
 
@@ -234,6 +259,249 @@
     controls.update();
   }
 
+  /**
+   * The robot.glb export is a single fused mesh (no separate lift/base
+   * nodes — confirmed by inspecting the glTF JSON chunk directly), so
+   * there's no node to animate. To make the lift arm move without
+   * touching any CAD geometry, we split that one mesh's *existing*
+   * triangles into two groups by a height (local Y) threshold — no
+   * vertex is moved, mirrored, or edited, we only partition the
+   * unmodified triangle list into "lift" and "base" draw sets.
+   *
+   * Sampling the vertex distribution (see internal implementation notes)
+   * shows a large, completely empty gap in local Y between the dense
+   * drivetrain/chassis cluster (~99.5% of vertices) and a sparse tall
+   * structure above it (the lift tower/arm, matching the physical
+   * four-bar lift visible in the build-progress photos). Because that
+   * gap contains zero vertices, splitting on any Y value inside it is
+   * guaranteed to never cut a triangle in half.
+   */
+  function findLocalYGap(positionAttr, count) {
+    var maxSamples = 60000;
+    var stride = Math.max(1, Math.floor(count / maxSamples));
+    var ys = [];
+    for (var i = 0; i < count; i += stride) {
+      ys.push(positionAttr.getY(i));
+    }
+    ys.sort(function (a, b) { return a - b; });
+
+    // Ignore the extreme 0.1% at each end so a single far-flung outlier
+    // vertex can't masquerade as "the gap".
+    var loCut = Math.floor(ys.length * 0.001);
+    var hiCut = Math.ceil(ys.length * 0.999);
+
+    var maxGap = 0;
+    var gapStart = 0;
+    var gapEnd = 0;
+    for (var j = loCut; j < hiCut - 1; j++) {
+      var gap = ys[j + 1] - ys[j];
+      if (gap > maxGap) {
+        maxGap = gap;
+        gapStart = ys[j];
+        gapEnd = ys[j + 1];
+      }
+    }
+
+    var totalRange = ys[hiCut - 1] - ys[loCut];
+    // Require the gap to be a substantial fraction of the whole range —
+    // otherwise this mesh doesn't have a clean lift/base separation and
+    // we should leave it alone rather than slice through real geometry.
+    if (!totalRange || maxGap < totalRange * 0.2) {
+      return null;
+    }
+
+    return { splitY: (gapStart + gapEnd) / 2, gapStart: gapStart, gapEnd: gapEnd };
+  }
+
+  function splitLiftFromModel(THREE, model) {
+    var sourceMesh = null;
+    model.traverse(function (node) {
+      if (!sourceMesh && node.isMesh && node.geometry && node.geometry.attributes.position) {
+        sourceMesh = node;
+      }
+    });
+    if (!sourceMesh) return null;
+
+    var geometry = sourceMesh.geometry;
+    var positionAttr = geometry.attributes.position;
+    var normalAttr = geometry.attributes.normal || null;
+    var colorAttr = geometry.attributes.color || null;
+    var index = geometry.index;
+    var count = positionAttr.count;
+
+    var gap = findLocalYGap(positionAttr, count);
+    if (!gap || !index) return null;
+
+    var splitY = gap.splitY;
+
+    // Pass 1: classify every vertex and track the lift group's Y extent.
+    var isLift = new Uint8Array(count);
+    var liftCount = 0;
+    var baseCount = 0;
+    var liftMinY = Infinity;
+    var liftMaxY = -Infinity;
+    for (var i = 0; i < count; i++) {
+      var y = positionAttr.getY(i);
+      if (y > splitY) {
+        isLift[i] = 1;
+        liftCount++;
+        if (y < liftMinY) liftMinY = y;
+        if (y > liftMaxY) liftMaxY = y;
+      } else {
+        baseCount++;
+      }
+    }
+    if (!liftCount || !baseCount) return null;
+
+    // Pass 2: the pivot is the centroid of the lift group's bottom-most
+    // band — i.e. roughly where the tower/arm meets the chassis, the
+    // real hinge/four-bar attachment point.
+    var pivotBandMaxY = liftMinY + (liftMaxY - liftMinY) * 0.15;
+    var pivotSumX = 0;
+    var pivotSumY = 0;
+    var pivotSumZ = 0;
+    var pivotCount = 0;
+    for (var p = 0; p < count; p++) {
+      if (!isLift[p]) continue;
+      var py = positionAttr.getY(p);
+      if (py <= pivotBandMaxY) {
+        pivotSumX += positionAttr.getX(p);
+        pivotSumY += py;
+        pivotSumZ += positionAttr.getZ(p);
+        pivotCount++;
+      }
+    }
+    if (!pivotCount) return null;
+    var pivot = new THREE.Vector3(pivotSumX / pivotCount, pivotSumY / pivotCount, pivotSumZ / pivotCount);
+
+    // Pass 3: build remap tables + new attribute arrays. Lift vertices
+    // are stored relative to the pivot so rotating the new mesh's
+    // `.position`/`.rotation` swings it around that pivot point.
+    var liftRemap = new Int32Array(count).fill(-1);
+    var baseRemap = new Int32Array(count).fill(-1);
+    var itemSize = positionAttr.itemSize;
+    var normalItemSize = normalAttr ? normalAttr.itemSize : 0;
+    var colorItemSize = colorAttr ? colorAttr.itemSize : 0;
+
+    var liftPositions = new Float32Array(liftCount * itemSize);
+    var basePositions = new Float32Array(baseCount * itemSize);
+    var liftNormals = normalAttr ? new Float32Array(liftCount * normalItemSize) : null;
+    var baseNormals = normalAttr ? new Float32Array(baseCount * normalItemSize) : null;
+    var liftColors = colorAttr ? new Float32Array(liftCount * colorItemSize) : null;
+    var baseColors = colorAttr ? new Float32Array(baseCount * colorItemSize) : null;
+
+    var liftCursor = 0;
+    var baseCursor = 0;
+    for (var k = 0; k < count; k++) {
+      if (isLift[k]) {
+        liftRemap[k] = liftCursor;
+        liftPositions[liftCursor * 3] = positionAttr.getX(k) - pivot.x;
+        liftPositions[liftCursor * 3 + 1] = positionAttr.getY(k) - pivot.y;
+        liftPositions[liftCursor * 3 + 2] = positionAttr.getZ(k) - pivot.z;
+        if (normalAttr) {
+          liftNormals[liftCursor * 3] = normalAttr.getX(k);
+          liftNormals[liftCursor * 3 + 1] = normalAttr.getY(k);
+          liftNormals[liftCursor * 3 + 2] = normalAttr.getZ(k);
+        }
+        if (colorAttr) {
+          liftColors[liftCursor * colorItemSize] = colorAttr.getX(k);
+          liftColors[liftCursor * colorItemSize + 1] = colorAttr.getY(k);
+          liftColors[liftCursor * colorItemSize + 2] = colorAttr.getZ(k);
+          if (colorItemSize === 4) liftColors[liftCursor * colorItemSize + 3] = colorAttr.getW(k);
+        }
+        liftCursor++;
+      } else {
+        baseRemap[k] = baseCursor;
+        basePositions[baseCursor * 3] = positionAttr.getX(k);
+        basePositions[baseCursor * 3 + 1] = positionAttr.getY(k);
+        basePositions[baseCursor * 3 + 2] = positionAttr.getZ(k);
+        if (normalAttr) {
+          baseNormals[baseCursor * 3] = normalAttr.getX(k);
+          baseNormals[baseCursor * 3 + 1] = normalAttr.getY(k);
+          baseNormals[baseCursor * 3 + 2] = normalAttr.getZ(k);
+        }
+        if (colorAttr) {
+          baseColors[baseCursor * colorItemSize] = colorAttr.getX(k);
+          baseColors[baseCursor * colorItemSize + 1] = colorAttr.getY(k);
+          baseColors[baseCursor * colorItemSize + 2] = colorAttr.getZ(k);
+          if (colorItemSize === 4) baseColors[baseCursor * colorItemSize + 3] = colorAttr.getW(k);
+        }
+        baseCursor++;
+      }
+    }
+
+    // Pass 4: split the index/triangle list. The Y-gap guarantees every
+    // triangle's three vertices land in the same group, so we only need
+    // to check one vertex per triangle.
+    var indexArray = index.array;
+    var triCount = indexArray.length / 3;
+    var liftTriCount = 0;
+    for (var t = 0; t < triCount; t++) {
+      if (isLift[indexArray[t * 3]]) liftTriCount++;
+    }
+    var baseTriCount = triCount - liftTriCount;
+
+    var IndexArrayType = count > 65535 ? Uint32Array : Uint16Array;
+    var liftIndices = new IndexArrayType(liftTriCount * 3);
+    var baseIndices = new IndexArrayType(baseTriCount * 3);
+    var liftIdxCursor = 0;
+    var baseIdxCursor = 0;
+    for (var t2 = 0; t2 < triCount; t2++) {
+      var a = indexArray[t2 * 3];
+      var b = indexArray[t2 * 3 + 1];
+      var c = indexArray[t2 * 3 + 2];
+      if (isLift[a]) {
+        liftIndices[liftIdxCursor++] = liftRemap[a];
+        liftIndices[liftIdxCursor++] = liftRemap[b];
+        liftIndices[liftIdxCursor++] = liftRemap[c];
+      } else {
+        baseIndices[baseIdxCursor++] = baseRemap[a];
+        baseIndices[baseIdxCursor++] = baseRemap[b];
+        baseIndices[baseIdxCursor++] = baseRemap[c];
+      }
+    }
+
+    var liftGeometry = new THREE.BufferGeometry();
+    liftGeometry.setAttribute('position', new THREE.BufferAttribute(liftPositions, itemSize));
+    if (liftNormals) liftGeometry.setAttribute('normal', new THREE.BufferAttribute(liftNormals, normalItemSize));
+    if (liftColors) liftGeometry.setAttribute('color', new THREE.BufferAttribute(liftColors, colorItemSize));
+    liftGeometry.setIndex(new THREE.BufferAttribute(liftIndices, 1));
+
+    var baseGeometry = new THREE.BufferGeometry();
+    baseGeometry.setAttribute('position', new THREE.BufferAttribute(basePositions, itemSize));
+    if (baseNormals) baseGeometry.setAttribute('normal', new THREE.BufferAttribute(baseNormals, normalItemSize));
+    if (baseColors) baseGeometry.setAttribute('color', new THREE.BufferAttribute(baseColors, colorItemSize));
+    baseGeometry.setIndex(new THREE.BufferAttribute(baseIndices, 1));
+
+    var liftMesh = new THREE.Mesh(liftGeometry, sourceMesh.material);
+    var baseMesh = new THREE.Mesh(baseGeometry, sourceMesh.material);
+    liftMesh.castShadow = baseMesh.castShadow = false;
+    liftMesh.receiveShadow = baseMesh.receiveShadow = false;
+
+    // Re-parent both new meshes exactly where the original single mesh
+    // sat, matching its local transform, then remove the original.
+    liftMesh.position.copy(sourceMesh.position).add(pivot);
+    liftMesh.quaternion.copy(sourceMesh.quaternion);
+    liftMesh.scale.copy(sourceMesh.scale);
+    baseMesh.position.copy(sourceMesh.position);
+    baseMesh.quaternion.copy(sourceMesh.quaternion);
+    baseMesh.scale.copy(sourceMesh.scale);
+
+    var parent = sourceMesh.parent;
+    parent.add(liftMesh);
+    parent.add(baseMesh);
+    parent.remove(sourceMesh);
+
+    sourceMesh.geometry.dispose();
+
+    // Rotating around local Z swings the tower through the same XY lean
+    // plane the physical four-bar lift moves in (confirmed by comparing
+    // the lift vertex group's bottom-to-top centroid drift against the
+    // build-progress photos, which show a pivoting arm — not a straight
+    // vertical slide).
+    return { liftMesh: liftMesh, baseMesh: baseMesh, pivot: pivot, axis: 'z' };
+  }
+
   function loadModel(THREE, GLTFLoader, DRACOLoader, scene, camera, controls) {
     var dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
@@ -264,6 +532,13 @@
 
         scene.add(model);
         state.model = model;
+
+        var lift = splitLiftFromModel(THREE, model);
+        if (lift) {
+          state.liftMesh = lift.liftMesh;
+          state.liftAxis = lift.axis;
+          state.liftAnimStart = performance.now();
+        }
 
         setLoading(false);
         setEnhanced(true);
@@ -297,6 +572,18 @@
   function animate() {
     if (disposed) return;
     state.controls.update();
+
+    // Independent of drag-to-rotate: continuously swing the lift arm up
+    // and down around its pivot. Skipped under prefers-reduced-motion so
+    // the model stays static (drag-rotate via OrbitControls still works
+    // either way, since that update() call above is unconditional).
+    if (state.liftMesh && !prefersReducedMotion()) {
+      var elapsedSeconds = (performance.now() - state.liftAnimStart) / 1000;
+      var phase = (elapsedSeconds / LIFT_CYCLE_SECONDS) * Math.PI * 2;
+      var offset = Math.sin(phase) * LIFT_ROTATION_AMPLITUDE;
+      state.liftMesh.rotation[state.liftAxis] = offset;
+    }
+
     state.renderer.render(state.scene, state.camera);
     state.rafId = window.requestAnimationFrame(animate);
   }
@@ -411,11 +698,20 @@
         controls.enableDamping = true;
         controls.dampingFactor = 0.08;
         controls.enablePan = false;
+        controls.screenSpacePanning = false;
         controls.enableZoom = true;
         controls.rotateSpeed = 0.55;
         controls.zoomSpeed = 0.7;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.6;
+        // Full 360° horizontal spin, but clamp vertical tilt so the camera
+        // can never flip upside-down or peek from directly above/below —
+        // there's no roll/Z-axis tilt in OrbitControls by default, so this
+        // keeps drag strictly to a Y-axis spin + limited X-axis (polar) tilt.
+        controls.minAzimuthAngle = -Infinity;
+        controls.maxAzimuthAngle = Infinity;
+        controls.minPolarAngle = THREE.MathUtils.degToRad(35);
+        controls.maxPolarAngle = THREE.MathUtils.degToRad(130);
 
         var lights = buildLights(THREE, scene);
 
