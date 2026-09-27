@@ -23,7 +23,12 @@
       document.documentElement.dataset.theme = theme;
     })();
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/motion.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/showcase.css' | relative_url }}">
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
@@ -42,5 +47,7 @@
   {%- include mobile-dock.html -%}
 
   <script src="{{ '/assets/js/theme.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/scroll-reveal.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/micro-interactions.js' | relative_url }}" defer></script>
 </body>
 </html>

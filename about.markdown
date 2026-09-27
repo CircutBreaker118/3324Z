@@ -5,7 +5,7 @@ permalink: /about/
 body_class: page-about
 ---
 
-<section class="page-section">
+<section class="page-section" data-reveal>
   <h1>About us</h1>
 
   <h2>Our story</h2>
@@ -16,7 +16,7 @@ body_class: page-about
   </p>
 </section>
 
-<section class="page-section">
+<section class="page-section" data-reveal>
   <h2>Goals</h2>
   <p>
     Our mission is to have fun and new learn things as we go along. We also want to win competitions
@@ -24,10 +24,10 @@ body_class: page-about
   </p>
 </section>
 
-<section class="page-section">
+<section class="page-section" data-reveal>
   <h2>Team members</h2>
   <div class="member-grid">
-    <article class="member-card">
+    <article class="member-card" data-reveal data-reveal-delay="0">
       <h3 class="member-card__name">Ansh Sharma</h3>
       <p class="member-card__role">Programmer / Driver</p>
       <p class="member-card__bio">
@@ -36,7 +36,7 @@ body_class: page-about
         I want to be a hardware and software engineer. My role is Programmer / Driver.
       </p>
     </article>
-    <article class="member-card">
+    <article class="member-card" data-reveal data-reveal-delay="120">
       <h3 class="member-card__name">Vansh V. Patel</h3>
       <p class="member-card__role">Main builder</p>
       <p class="member-card__bio">
@@ -48,7 +48,7 @@ body_class: page-about
   </div>
 </section>
 
-<aside class="favorite-food" aria-labelledby="favorite-food-heading">
+<aside class="favorite-food" aria-labelledby="favorite-food-heading" data-reveal>
   <h2 id="favorite-food-heading">Favorite food</h2>
   <p class="favorite-food__shout">DONUTS!!!!!!!!!!!!!!!</p>
 </aside>

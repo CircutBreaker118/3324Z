@@ -5,6 +5,8 @@
 
   --font-sans: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-sans);
 
   --color-bg: #f0f2f5;
   --color-bg-elevated: #ffffff;
@@ -180,6 +182,8 @@ a:hover {
 }
 
 .site-brand__name {
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1rem;
 }
 
@@ -340,6 +344,31 @@ a:hover {
   background: linear-gradient(180deg, var(--color-accent-soft), transparent 85%);
 }
 
+.hero--immersive {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .hero__logo {
   width: min(12rem, 40vw);
   height: auto;
@@ -361,9 +390,11 @@ a:hover {
 
 .hero__title {
   margin: 0;
+  font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .hero__tagline {
@@ -440,6 +471,12 @@ a:hover {
 
 .page-section h1 {
   margin-top: 0;
+}
+
+.page-section h1,
+.page-section h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }
 
 .page-section h2 {
@@ -729,8 +766,11 @@ body.page-dum-e .site-main__inner {
 
 .stats-dashboard__title {
   margin: 0 0 var(--space-sm);
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .stats-dashboard__meta {

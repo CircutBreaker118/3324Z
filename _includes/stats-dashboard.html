@@ -9,34 +9,34 @@
   </header>
 
   <div class="stats-dashboard__grid">
-    <article class="stat-card">
+    <article class="stat-card" data-reveal data-reveal-delay="0">
       <h2 class="stat-card__label">Win rate</h2>
       <p class="stat-card__value">{{ stats.record.win_rate_percent }}%</p>
       <p class="stat-card__detail">{{ stats.record.wins }}-{{ stats.record.losses }}-{{ stats.record.ties }}</p>
     </article>
-    <article class="stat-card">
+    <article class="stat-card" data-reveal data-reveal-delay="60">
       <h2 class="stat-card__label">TrueSkill rank</h2>
       <p class="stat-card__value">#{{ stats.trueskill.rank }}</p>
       <p class="stat-card__detail">of {{ stats.trueskill.total_teams }} teams</p>
     </article>
-    <article class="stat-card">
+    <article class="stat-card" data-reveal data-reveal-delay="120">
       <h2 class="stat-card__label">Best skills</h2>
       <p class="stat-card__value">{{ stats.skills.best }}</p>
       <p class="stat-card__detail">World rank #{{ stats.skills.world_rank }}</p>
     </article>
-    <article class="stat-card">
+    <article class="stat-card" data-reveal data-reveal-delay="180">
       <h2 class="stat-card__label">Events</h2>
       <p class="stat-card__value">{{ stats.events }}</p>
       <p class="stat-card__detail">{{ stats.matches }} matches</p>
     </article>
-    <article class="stat-card">
+    <article class="stat-card" data-reveal data-reveal-delay="240">
       <h2 class="stat-card__label">Avg WP</h2>
       <p class="stat-card__value">{{ stats.avg_wp }}</p>
       <p class="stat-card__detail">Per match</p>
     </article>
   </div>
 
-  <section class="stats-chart" aria-labelledby="stats-radar-heading">
+  <section class="stats-chart" aria-labelledby="stats-radar-heading" data-reveal>
     <h2 id="stats-radar-heading" class="stats-chart__heading">Team profile</h2>
     <div class="stats-chart__wrap">
       <canvas id="team-radar-chart" width="400" height="400" role="img" aria-label="Radar chart of normalized team statistics"></canvas>

@@ -27,6 +27,8 @@ body_class: page-dum-e
   </p>
 </section>
 
+{% include cad-showcase.html %}
+
 <section class="page-section page-section--media page-section--foreground">
   <figure class="robot-figure">
     <img src="/Drivetrain.png" alt="3324Z robot drivetrain" width="1200" height="800" loading="lazy" decoding="async" />

@@ -1,0 +1,181 @@
+/* Lift Mechanism showcase (DUM-E) — 3D photo carousel + fallback grid */
+
+.cad-showcase__intro {
+  margin: 0 0 var(--space-lg);
+  max-width: 42rem;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+.cad-showcase__stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* 3D viewer — hidden until JS enhances successfully (progressive enhancement) */
+.cad-showcase__viewer {
+  display: none;
+  position: relative;
+  min-height: 22rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 20%, var(--color-accent-soft), var(--color-bg-muted) 70%);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 0 0 1px var(--color-accent-glow), var(--shadow-md);
+  transition: box-shadow 0.3s ease;
+}
+
+.cad-showcase--enhanced .cad-showcase__viewer {
+  display: block;
+}
+
+.cad-showcase__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+
+.cad-showcase__canvas:active {
+  cursor: grabbing;
+}
+
+.cad-showcase__hint {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.cad-showcase__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-muted);
+}
+
+.cad-showcase__loading[hidden] {
+  display: none;
+}
+
+.cad-showcase__active-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(0deg, rgba(11, 15, 20, 0.72), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.cad-showcase--enhanced .cad-showcase__active-caption {
+  opacity: 1;
+}
+
+/* Fallback / thumbnail grid — the complete experience without JS or with
+   reduced motion; becomes a compact caption strip once the 3D view is live */
+.cad-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-md);
+}
+
+.cad-showcase--enhanced .cad-showcase__grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.cad-showcase__panel {
+  margin: 0;
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.cad-showcase__panel img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+}
+
+.cad-showcase__panel figcaption {
+  margin-top: var(--space-sm);
+  font-size: 0.8125rem;
+  color: var(--color-text-faint);
+}
+
+.cad-showcase__panel-label {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.cad-showcase--enhanced .cad-showcase__panel img {
+  aspect-ratio: 1;
+}
+
+.cad-showcase--enhanced .cad-showcase__panel-caption {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cad-showcase__panel:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 26px var(--color-accent-glow);
+    transform: translateY(-3px);
+  }
+
+  .cad-showcase__viewer:hover {
+    box-shadow: 0 0 0 1px var(--color-accent), var(--shadow-md);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cad-showcase__panel {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .cad-showcase--enhanced .cad-showcase__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

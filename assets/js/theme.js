@@ -16,6 +16,7 @@
       /* ignore quota / private mode */
     }
     syncToggle(next);
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
   }
 
   function syncToggle(theme) {
