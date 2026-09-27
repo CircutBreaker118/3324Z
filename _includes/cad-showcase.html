@@ -1,21 +1,50 @@
-<section class="page-section page-section--foreground cad-showcase" id="lift-showcase" data-reveal>
-  <h2>Lift Mechanism — Build Progression</h2>
+<section
+  class="page-section page-section--foreground cad-showcase"
+  id="lift-showcase"
+  data-reveal
+  data-model-src="{{ '/assets/cad/robot.glb' | relative_url }}"
+>
+  <h2>Interactive CAD — 3324Z Lift</h2>
   <p class="cad-showcase__intro">
-    Drag the display below to spin through our lift mechanism build — three real photos from the shop, followed by the
-    Fusion 360 concept render we're designing toward. These are our own progress shots and a design preview, not a
-    finished CAD scan of the robot.
+    This is the real CAD assembly for our lift mechanism, straight from the design files — not a photo, not a
+    render. Drag to rotate it in full 3D, scroll or pinch to zoom, and take a close look at the aluminum and steel
+    parts before they ever hit the shop floor.
   </p>
 
   <div class="cad-showcase__stage">
     <div class="cad-showcase__viewer" id="lift-showcase-viewer">
-      <canvas id="lift-showcase-canvas" class="cad-showcase__canvas" aria-hidden="true"></canvas>
-      <p class="cad-showcase__hint" aria-hidden="true">Drag to rotate</p>
-      <p class="cad-showcase__loading" id="lift-showcase-loading">Loading showcase…</p>
-      <p class="cad-showcase__active-caption" id="lift-showcase-caption" aria-live="polite"></p>
+      <canvas
+        id="lift-showcase-canvas"
+        class="cad-showcase__canvas"
+        role="img"
+        aria-label="Interactive 3D viewer of the 3324Z lift mechanism CAD model — drag to rotate, scroll to zoom"
+      ></canvas>
+      <p class="cad-showcase__hint" aria-hidden="true">Drag to rotate · Scroll to zoom</p>
+      <div class="cad-showcase__loading" id="lift-showcase-loading" role="status" aria-live="polite">
+        <span class="cad-showcase__spinner" aria-hidden="true"></span>
+        <span class="cad-showcase__loading-text" id="lift-showcase-loading-text">Loading 3D model…</span>
+      </div>
     </div>
 
-    <div class="cad-showcase__grid" id="lift-showcase-grid">
-      <figure class="cad-showcase__panel" data-panel-index="0">
+    <div class="cad-showcase__fallback" id="lift-showcase-fallback">
+      <img
+        src="{{ '/assets/images/dum-e/cad-render.png' | relative_url }}"
+        alt="Static preview of the 3324Z lift mechanism CAD assembly, shown as an isometric render"
+        loading="lazy"
+        decoding="async"
+        width="1330"
+        height="1232"
+      />
+      <p id="lift-showcase-fallback-text">
+        A live 3D view isn't available in this browser right now — here's a static preview of the CAD assembly instead.
+      </p>
+    </div>
+  </div>
+
+  <div class="cad-showcase__photos">
+    <p class="cad-showcase__photos-label">Build progress in the shop</p>
+    <div class="cad-showcase__photos-grid">
+      <figure class="cad-showcase__photo">
         <img
           src="{{ '/assets/images/dum-e/build-stage-1.jpg' | relative_url }}"
           alt="Build stage 1: an early lift frame with crossed uprights test-fit on the robot chassis"
@@ -24,12 +53,9 @@
           width="1200"
           height="1600"
         />
-        <figcaption>
-          <span class="cad-showcase__panel-label">Build stage 1</span>
-          <span class="cad-showcase__panel-caption">First lift uprights test-fit on the drivetrain, before any top crossmembers.</span>
-        </figcaption>
+        <figcaption>First uprights test-fit on the drivetrain, before any top crossmembers.</figcaption>
       </figure>
-      <figure class="cad-showcase__panel" data-panel-index="1">
+      <figure class="cad-showcase__photo">
         <img
           src="{{ '/assets/images/dum-e/build-stage-2.jpg' | relative_url }}"
           alt="Build stage 2: the lift frame with a rectangular top crossmember added, taller than stage 1"
@@ -38,12 +64,9 @@
           width="1200"
           height="1600"
         />
-        <figcaption>
-          <span class="cad-showcase__panel-label">Build stage 2</span>
-          <span class="cad-showcase__panel-caption">A rectangular top crossmember goes on and the frame gains height.</span>
-        </figcaption>
+        <figcaption>A rectangular top crossmember goes on and the frame gains height.</figcaption>
       </figure>
-      <figure class="cad-showcase__panel" data-panel-index="2">
+      <figure class="cad-showcase__photo">
         <img
           src="{{ '/assets/images/dum-e/build-stage-3.jpg' | relative_url }}"
           alt="Build stage 3: a taller lift tower with extra diagonal bracing, mid-build"
@@ -52,27 +75,17 @@
           width="1200"
           height="1600"
         />
-        <figcaption>
-          <span class="cad-showcase__panel-label">Build stage 3</span>
-          <span class="cad-showcase__panel-caption">Extra bracing and a taller tower — the most recent in-shop progress shot.</span>
-        </figcaption>
-      </figure>
-      <figure class="cad-showcase__panel" data-panel-index="3">
-        <img
-          src="{{ '/assets/images/dum-e/cad-render.png' | relative_url }}"
-          alt="Fusion 360 concept render of the lift mechanism, shown as an isometric CAD assembly"
-          loading="lazy"
-          decoding="async"
-          width="1330"
-          height="1232"
-        />
-        <figcaption>
-          <span class="cad-showcase__panel-label">CAD preview</span>
-          <span class="cad-showcase__panel-caption">The Fusion 360 design we're building toward next — a concept, not a finished scan.</span>
-        </figcaption>
+        <figcaption>Extra bracing and a taller tower — the most recent in-shop progress shot.</figcaption>
       </figure>
     </div>
   </div>
 </section>
 
-<script type="module" src="{{ '/assets/js/lift-showcase.js' | relative_url }}"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+</script>
+<script type="module" src="{{ '/assets/js/robot-viewer.js' | relative_url }}"></script>
