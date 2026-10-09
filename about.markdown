@@ -45,7 +45,7 @@ body_class: page-about
     </article>
     <article class="member-card" data-reveal data-reveal-delay="120">
       <h3 class="member-card__name">Vansh Patel</h3>
-      <p class="member-card__role">Builder &amp; Designer</p>
+      <p class="member-card__role">Builder</p>
       <p class="member-card__bio">
         I am Vansh Patel, and I'm in the eighth grade; this being my 3rd year in VEX V5 robotics. On our
         team, I mainly take the role of builder and designer, and I am learning coding to help lighten the
@@ -62,7 +62,7 @@ body_class: page-about
     </article>
     <article class="member-card" data-reveal data-reveal-delay="240">
       <h3 class="member-card__name">Ansh Sharma</h3>
-      <p class="member-card__role">Programmer &amp; Driver</p>
+      <p class="member-card__role">Programmer, Designer &amp; Driver</p>
       <p class="member-card__bio">
         I am Ansh Sharma, an eighth-grade student at The Science Academy STEM Magnet School. I have four
         years of experience in VEX Robotics, including three years in VEX V5 and one year in VEX IQ. On my
