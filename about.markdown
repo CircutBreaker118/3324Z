@@ -28,21 +28,54 @@ body_class: page-about
   <h2>Team members</h2>
   <div class="member-grid">
     <article class="member-card" data-reveal data-reveal-delay="0">
-      <h3 class="member-card__name">Ansh Sharma</h3>
-      <p class="member-card__role">Programmer / Driver</p>
+      <h3 class="member-card__name">Oishi Ghosh</h3>
+      <p class="member-card__role">Product Management</p>
       <p class="member-card__bio">
-        I joined robotics to have fun and try something new/ learn mechanical engineering
-        and expand my knowledge of how robots work and what purposes they’re used for. When I get older
-        I want to be a hardware and software engineer. My role is Programmer / Driver.
+        My name is Oishi Ghosh, and I am a seventh grader at the Science Academy STEM Magnet. I participated
+        in VEX GO for one year and VEX IQ for two years, and this is my first year in V5. My main role is
+        product management, where I help prioritize tasks, manage our time, and keep track of our timeline.
+        Since there are only three people on our team, I also help with building and other team
+        responsibilities.
+      </p>
+      <p class="member-card__bio">
+        Outside of robotics, I am a competitive swimmer and play water polo. I like performative arts, so I
+        participate in classical Indian dance, theater, and singing, which ties back to product management.
+        I also love eating food.
       </p>
     </article>
     <article class="member-card" data-reveal data-reveal-delay="120">
-      <h3 class="member-card__name">Vansh V. Patel</h3>
-      <p class="member-card__role">Main builder</p>
+      <h3 class="member-card__name">Vansh Patel</h3>
+      <p class="member-card__role">Builder &amp; Designer</p>
       <p class="member-card__bio">
-        I joined robotics to learn mechanical engineering and to express my creativity.
-        I also joined to try new things and to expand my field of knowledge. When I grow up I want to be
-        a geneticist. My role is the main builder.
+        I am Vansh Patel, and I'm in the eighth grade; this being my 3rd year in VEX V5 robotics. On our
+        team, I mainly take the role of builder and designer, and I am learning coding to help lighten the
+        workload for the team. I have brainstormed ideas for our auton and driver strategy, both for matches
+        and for skills.
+      </p>
+      <p class="member-card__bio">
+        I do competitive swimming on the Vision swim team, and my favorite strokes are breaststroke and
+        freestyle. I like playing video games, reading books, watching tv, and creating various things out of
+        cardboard in my free time. I like all kinds of stories, but I like fantasy and sci-fi stories the
+        most, making my own fictional worlds in my free time, incorporating realism and creativity. I also
+        like pickles.
+      </p>
+    </article>
+    <article class="member-card" data-reveal data-reveal-delay="240">
+      <h3 class="member-card__name">Ansh Sharma</h3>
+      <p class="member-card__role">Programmer &amp; Driver</p>
+      <p class="member-card__bio">
+        I am Ansh Sharma, an eighth-grade student at The Science Academy STEM Magnet School. I have four
+        years of experience in VEX Robotics, including three years in VEX V5 and one year in VEX IQ. On my
+        team, I program, design, drive, and help build the robot.
+      </p>
+      <p class="member-card__bio">
+        Outside of robotics, I participate in Speech and Debate, where I compete in World Schools Debate and
+        Assigned Platform Speaking. I am also involved in Stellar Xplorers and Science Bowl. I enjoy playing
+        golf and, of course, eating donuts because donuts are amazing. I also play several different video
+        games like Minecraft and Hollow Knight, along with other video games where timing and strategy are
+        key. Other things I do in my free time include building websites like our team website and
+        ProofGPT, a website built to help my classmates in geometry last year do their proof book (a project
+        filled with geometrical proofs).
       </p>
     </article>
   </div>
