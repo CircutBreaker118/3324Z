@@ -139,6 +139,43 @@
   color: var(--color-text-muted);
 }
 
+/* Static CAD render — replaces the live viewer; same large rectangular
+   framing as .cad-showcase__viewer, but just a plain blurred-hole image,
+   no canvas/JS. See the HTML comment in _includes/cad-showcase.html for why
+   the live viewer is disabled. */
+.cad-showcase__static {
+  margin: 0;
+  width: 100%;
+  min-height: 26rem;
+  max-height: 46rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 20%, var(--color-accent-soft), var(--color-bg-muted) 70%);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 0 0 1px var(--color-accent-glow), var(--shadow-md);
+}
+
+.cad-showcase__static img {
+  display: block;
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+}
+
+.cad-showcase__static figcaption {
+  margin-top: var(--space-md);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
 /* Supplementary build-progress photo strip — secondary to the 3D viewer */
 .cad-showcase__photos {
   margin-top: var(--space-xl);

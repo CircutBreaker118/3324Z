@@ -2,16 +2,32 @@
   class="page-section page-section--foreground cad-showcase"
   id="lift-showcase"
   data-reveal
-  data-model-src="{{ '/assets/cad/robot.glb' | relative_url }}"
 >
-  <h2>Interactive CAD — 3324Z Lift</h2>
+  <h2>CAD Preview — 3324Z Lift</h2>
   <p class="cad-showcase__intro">
-    This is the real CAD assembly for our lift mechanism, straight from the design files — not a photo, not a
-    render. Drag to rotate it in full 3D, scroll or pinch to zoom, and take a close look at the aluminum and steel
-    parts before they ever hit the shop floor.
+    This is a preview of the CAD assembly for our lift mechanism, straight from the design files — not a photo.
   </p>
 
   <div class="cad-showcase__stage">
+    <!--
+      The interactive Three.js/GLB viewer below is intentionally disabled.
+      Reason: letting visitors freely zoom/rotate the live model lets other
+      VEX teams count the mounting-hole pattern on the C-channel/plate parts
+      and reverse-engineer exact hole spacing/part dimensions (competitive
+      intelligence concern). A static, hole-blurred render is shown instead
+      (see the <figure class="cad-showcase__static"> block right below this
+      comment, which uses assets/images/dum-e/cad-render-blurred.png).
+
+      To re-enable the live viewer later:
+        1. Restore the `data-model-src` attribute (pointing at
+           /assets/cad/robot.glb via relative_url) on the <section> tag above.
+        2. Uncomment the .cad-showcase__viewer block and the
+           .cad-showcase__fallback block below.
+        3. Remove (or hide) the <figure class="cad-showcase__static"> block.
+        4. Uncomment the <script type="importmap"> and
+           <script type="module" src=".../robot-viewer.js"> tags at the
+           bottom of this file.
+
     <div class="cad-showcase__viewer" id="lift-showcase-viewer">
       <canvas
         id="lift-showcase-canvas"
@@ -39,6 +55,19 @@
         A live 3D view isn't available in this browser right now — here's a static preview of the CAD assembly instead.
       </p>
     </div>
+    -->
+
+    <figure class="cad-showcase__static">
+      <img
+        src="{{ '/assets/images/dum-e/cad-render-blurred.png' | relative_url }}"
+        alt="Static isometric preview of the 3324Z lift mechanism CAD assembly, with the mounting-hole pattern softened"
+        loading="lazy"
+        decoding="async"
+        width="1330"
+        height="1232"
+      />
+      <figcaption>Isometric CAD render of our lift mechanism.</figcaption>
+    </figure>
   </div>
 
   <div class="cad-showcase__photos">
@@ -81,6 +110,11 @@
   </div>
 </section>
 
+<!--
+  Live-viewer bootstrap scripts, disabled along with the viewer markup
+  above (see the comment in .cad-showcase__stage for why and how to
+  re-enable). Uncomment both tags below when re-enabling the viewer.
+
 <script type="importmap">
   {
     "imports": {
@@ -89,3 +123,4 @@
   }
 </script>
 <script type="module" src="{{ '/assets/js/robot-viewer.js' | relative_url }}"></script>
+-->
