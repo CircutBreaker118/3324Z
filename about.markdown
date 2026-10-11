@@ -10,17 +10,17 @@ body_class: page-about
 
   <h2>Our story</h2>
   <p>
-    We are a kids robotics group who started our journey in robotics in 6th grade (2024–2025). We are currently
-    in 7th grade and compete in RECF robotics competitions. One of our greatest achievements so far is
-    reaching the 2025 California Middle School Regional Championship. We had lots of fun and learned several new things.
+    We are a team of two eighth graders and one seventh grader who compete together in VEX V5 Robotics
+    Competition. Throughout our VEX career, we have qualified to the California Region 4 State Championship
+    twice — once during the High Stakes season and again during Push Back.
   </p>
 </section>
 
 <section class="page-section" data-reveal>
   <h2>Goals</h2>
   <p>
-    Our mission is to have fun and new learn things as we go along. We also want to win competitions
-    and qualify to worlds in 7th grade as it is something that we want to accomplish.
+    Our biggest goal is to have fun and keep learning new things along the way. Beyond that, we're working
+    toward qualifying for the VEX Robotics World Championship.
   </p>
 </section>
 
